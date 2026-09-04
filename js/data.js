@@ -33,7 +33,6 @@ const PORTFOLIO_DATA = {
       slug: "street",
       label: "Street",
       images: [
-        "dsc2828",
         "dsc2909",
         "dsc2915",
         "dsc2962",
@@ -83,7 +82,6 @@ const PORTFOLIO_DATA = {
         "dsc4238",
         "dsc7118",
         "dsc7241",
-        "dsc7318",
         "dsc7350",
         "dsc7436",
         "dsc7518",
