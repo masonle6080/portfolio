@@ -162,6 +162,13 @@
     label.textContent = opts.label;
     cover.appendChild(label);
 
+    if(opts.count != null){
+      var count = document.createElement('span');
+      count.className = 'cover-count';
+      count.textContent = '(' + opts.count + ' ' + (opts.countUnit || 'photos') + ')';
+      cover.appendChild(count);
+    }
+
     coversGrid.appendChild(cover);
     markLoaded(img);
   }
@@ -174,6 +181,8 @@
       label: cat.label,
       imgSrc: 'images/thumbs/' + cat.slug + '/' + COVERS[cat.slug] + '.jpg',
       large: !!LARGE_COVERS[cat.slug],
+      count: cat.images.length,
+      countUnit: cat.images.length === 1 ? 'photo' : 'photos',
       onOpen: function(){ openCategory(cat); }
     });
   });
@@ -184,6 +193,8 @@
     imgSrc: 'videos/posters/films-cover.jpg',
     isVideo: true,
     large: true,
+    count: VIDEOS.length,
+    countUnit: VIDEOS.length === 1 ? 'film' : 'films',
     onOpen: openVideos
   });
 
