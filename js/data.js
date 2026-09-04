@@ -65,16 +65,13 @@ const PORTFOLIO_DATA = {
         "dsc1339",
         "dsc1349",
         "dsc1763",
-        "dsc2700",
         "dsc2707",
         "dsc2721",
         "dsc2753",
         "dsc2783",
         "dsc7489",
         "dsc7491",
-        "dsc7499",
         "dsc7524",
-        "dsc9310",
       ]
     },
     {
