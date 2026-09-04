@@ -9,27 +9,26 @@
 <body>
 
 <header class="site-header">
-  <a href="#hero" class="logo">Mason Le</a>
+  <a href="#top" class="logo">Mason Le</a>
 </header>
 
-<section class="hero" id="hero">
-  <div class="hero-overlay"></div>
-</section>
-
-<div class="covers-grid" id="covers-grid"></div>
-
-<section class="about-section" id="about">
-  <h2 class="about-heading reveal">About Me</h2>
+<section class="about-section about-section-top" id="top">
   <div class="about-layout">
     <div class="about-media reveal">
       <img src="images/about.jpg" alt="Mason Le">
     </div>
     <div class="about-copy reveal">
-      <p class="about-text">Mason Le is a Computer Science student at UCSB.</p>
+      <p class="about-text">Mason Le is a Computer Science student at UCSB with a love for photography and filmmaking.</p>
       <p class="about-email">masonle65@gmail.com</p>
     </div>
   </div>
 </section>
+
+<div class="covers-grid" id="covers-grid"></div>
+
+<div class="back-to-top-wrap">
+  <a href="#top" class="back-to-top">Back to top</a>
+</div>
 
 <div class="category-overlay" id="category-overlay">
   <div class="overlay-topbar">
@@ -57,13 +56,6 @@
 <script src="js/main.js"></script>
 <script>
 (function(){
-  var heroSrcs = [
-    'images/full/street/dsc2828.jpg',
-    'images/full/portrait/dsc1451.jpg',
-    'images/full/cuba/dsc6285.jpg'
-  ];
-  initHero(heroSrcs, document.getElementById('hero'));
-
   var COVERS = {
     cars: 'dsc3457',
     cuba: 'dsc6662',
@@ -86,34 +78,14 @@
   var overlayClose = document.getElementById('overlay-close');
 
   function openCategory(cat){
-    overlayTitle.textContent = cat.label;
-    overlayGrid.innerHTML = '';
-    var figures = [];
-
-    cat.images.forEach(function(name){
-      var item = document.createElement('div');
-      item.className = 'gallery-item';
-
-      var img = document.createElement('img');
-      img.src = 'images/thumbs/' + cat.slug + '/' + name + '.jpg';
-      img.alt = cat.label + ' photograph';
-      item.appendChild(img);
-
-      overlayGrid.appendChild(item);
-      markLoaded(img);
-
-      figures.push({
-        el: item,
+    var figures = cat.images.map(function(name){
+      return {
         full: 'images/full/' + cat.slug + '/' + name + '.jpg',
         alt: cat.label + ' photograph',
         caption: cat.label
-      });
+      };
     });
-
-    Lightbox.bindTriggers(figures);
-    overlay.classList.add('open');
-    overlay.scrollTop = 0;
-    pushScrollLock();
+    Lightbox.open(figures, 0);
   }
 
   function openVideos(){
@@ -169,7 +141,7 @@
   function buildCoverTile(opts){
     var cover = document.createElement('a');
     cover.href = '#' + opts.slug;
-    cover.className = 'cover-item reveal' + (opts.isVideo ? ' is-video' : '');
+    cover.className = 'cover-item reveal' + (opts.isVideo ? ' is-video' : '') + (opts.large ? ' cover-item--large' : '');
     cover.addEventListener('click', function(e){
       e.preventDefault();
       opts.onOpen();
@@ -194,11 +166,14 @@
     markLoaded(img);
   }
 
+  var LARGE_COVERS = { landscape: true, cars: true };
+
   PORTFOLIO_DATA.categories.forEach(function(cat){
     buildCoverTile({
       slug: cat.slug,
       label: cat.label,
       imgSrc: 'images/thumbs/' + cat.slug + '/' + COVERS[cat.slug] + '.jpg',
+      large: !!LARGE_COVERS[cat.slug],
       onOpen: function(){ openCategory(cat); }
     });
   });
@@ -208,10 +183,21 @@
     label: 'Films',
     imgSrc: 'videos/posters/films-cover.jpg',
     isVideo: true,
+    large: true,
     onOpen: openVideos
   });
 
   initReveal(coversGrid);
+
+  var headerEl = document.querySelector('.site-header');
+  if(headerEl){
+    var headerObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        headerEl.classList.toggle('visible', entry.isIntersecting);
+      });
+    }, { threshold: 0, rootMargin: '-25% 0px 0px 0px' });
+    headerObserver.observe(coversGrid);
+  }
 })();
 </script>
 </body>

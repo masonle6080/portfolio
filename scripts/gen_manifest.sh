@@ -1,8 +1,8 @@
 #!/bin/bash
 cd /Users/masonle/Documents/code/creativePortfolio/images/thumbs
 
-cats=(street portrait cuba landscape sports cars)
-labels=("Street" "Portrait" "Cuba" "Landscape" "Sports" "Cars")
+cats=(cuba street landscape portrait sports cars)
+labels=("Cuba" "Street" "Landscape" "Portrait" "Sports" "Cars")
 
 out="/Users/masonle/Documents/code/creativePortfolio/js/data.js"
 echo "const PORTFOLIO_DATA = {" > "$out"

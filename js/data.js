@@ -1,48 +1,6 @@
 const PORTFOLIO_DATA = {
   categories: [
     {
-      slug: "street",
-      label: "Street",
-      images: [
-        "dsc2828",
-        "dsc2909",
-        "dsc2915",
-        "dsc2962",
-        "dsc3016",
-        "dsc4258-2",
-        "dsc7606",
-        "dsc7612",
-        "dsc7626",
-        "dsc7703",
-        "dsc7725",
-        "dsc7748",
-        "dsc7763",
-        "dsc7775",
-        "dsc7804",
-        "dsc7841",
-        "dsc7881",
-        "dsc7914",
-        "dsc7952",
-        "dsc7996",
-      ]
-    },
-    {
-      slug: "portrait",
-      label: "Portrait",
-      images: [
-        "dsc1451",
-        "dsc4199",
-        "dsc4238",
-        "dsc7118",
-        "dsc7241",
-        "dsc7318",
-        "dsc7350",
-        "dsc7436",
-        "dsc7518",
-        "dsc7544",
-      ]
-    },
-    {
       slug: "cuba",
       label: "Cuba",
       images: [
@@ -72,6 +30,32 @@ const PORTFOLIO_DATA = {
       ]
     },
     {
+      slug: "street",
+      label: "Street",
+      images: [
+        "dsc2828",
+        "dsc2909",
+        "dsc2915",
+        "dsc2962",
+        "dsc3016",
+        "dsc4258-2",
+        "dsc7606",
+        "dsc7612",
+        "dsc7626",
+        "dsc7703",
+        "dsc7725",
+        "dsc7748",
+        "dsc7763",
+        "dsc7775",
+        "dsc7804",
+        "dsc7841",
+        "dsc7881",
+        "dsc7914",
+        "dsc7952",
+        "dsc7996",
+      ]
+    },
+    {
       slug: "landscape",
       label: "Landscape",
       images: [
@@ -91,6 +75,22 @@ const PORTFOLIO_DATA = {
         "dsc7499",
         "dsc7524",
         "dsc9310",
+      ]
+    },
+    {
+      slug: "portrait",
+      label: "Portrait",
+      images: [
+        "dsc1451",
+        "dsc4199",
+        "dsc4238",
+        "dsc7118",
+        "dsc7241",
+        "dsc7318",
+        "dsc7350",
+        "dsc7436",
+        "dsc7518",
+        "dsc7544",
       ]
     },
     {
