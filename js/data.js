@@ -112,7 +112,6 @@ const PORTFOLIO_DATA = {
         "dsc3530",
         "dsc4523",
         "dsc4613-enhanced-nr",
-        "dsc4641-enhanced-nr",
         "dsc5329",
       ]
     }
