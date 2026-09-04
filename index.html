@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photography Portfolio</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="#hero" class="logo">Mason Le</a>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-overlay"></div>
+</section>
+
+<div class="covers-grid" id="covers-grid"></div>
+
+<section class="about-section" id="about">
+  <h2 class="about-heading reveal">About Me</h2>
+  <div class="about-layout">
+    <div class="about-media reveal">
+      <img src="images/about.jpg" alt="Mason Le">
+    </div>
+    <div class="about-copy reveal">
+      <p class="about-text">Mason Le is a Computer Science student at UCSB.</p>
+      <p class="about-email">masonle65@gmail.com</p>
+    </div>
+  </div>
+</section>
+
+<div class="category-overlay" id="category-overlay">
+  <div class="overlay-topbar">
+    <span class="overlay-title" id="overlay-title"></span>
+    <button class="overlay-close" id="overlay-close">Close</button>
+  </div>
+  <div class="overlay-body">
+    <div class="gallery-grid" id="overlay-grid"></div>
+  </div>
+</div>
+
+<div class="lightbox">
+  <div class="lightbox-frame">
+    <button class="lightbox-prev">&#8249;</button>
+    <div class="lightbox-img-wrap">
+      <img src="" alt="">
+      <div class="lightbox-caption"></div>
+    </div>
+    <button class="lightbox-next">&#8250;</button>
+    <button class="lightbox-close">Close</button>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+(function(){
+  var heroSrcs = [
+    'images/full/street/dsc2828.jpg',
+    'images/full/portrait/dsc1451.jpg',
+    'images/full/cuba/dsc6285.jpg'
+  ];
+  initHero(heroSrcs, document.getElementById('hero'));
+
+  var COVERS = {
+    cars: 'dsc3457',
+    cuba: 'dsc6662',
+    landscape: 'dsc2753',
+    portrait: 'dsc4238',
+    sports: 'dsc6898',
+    street: 'dsc7748'
+  };
+
+  var VIDEOS = [
+    { name: 'expedition-amana', title: 'Expedition Amana' },
+    { name: 'paul-revere-music', title: 'Paul Revere Music' },
+    { name: 'the-price-to-learn', title: 'The Price to Learn' }
+  ];
+
+  var coversGrid = document.getElementById('covers-grid');
+  var overlay = document.getElementById('category-overlay');
+  var overlayTitle = document.getElementById('overlay-title');
+  var overlayGrid = document.getElementById('overlay-grid');
+  var overlayClose = document.getElementById('overlay-close');
+
+  function openCategory(cat){
+    overlayTitle.textContent = cat.label;
+    overlayGrid.innerHTML = '';
+    var figures = [];
+
+    cat.images.forEach(function(name){
+      var item = document.createElement('div');
+      item.className = 'gallery-item';
+
+      var img = document.createElement('img');
+      img.src = 'images/thumbs/' + cat.slug + '/' + name + '.jpg';
+      img.alt = cat.label + ' photograph';
+      item.appendChild(img);
+
+      overlayGrid.appendChild(item);
+      markLoaded(img);
+
+      figures.push({
+        el: item,
+        full: 'images/full/' + cat.slug + '/' + name + '.jpg',
+        alt: cat.label + ' photograph',
+        caption: cat.label
+      });
+    });
+
+    Lightbox.bindTriggers(figures);
+    overlay.classList.add('open');
+    overlay.scrollTop = 0;
+    pushScrollLock();
+  }
+
+  function openVideos(){
+    overlayTitle.textContent = 'Films';
+    overlayGrid.innerHTML = '';
+
+    VIDEOS.forEach(function(v){
+      var item = document.createElement('div');
+      item.className = 'gallery-item video-item';
+
+      var video = document.createElement('video');
+      video.controls = true;
+      video.preload = 'metadata';
+      video.poster = 'videos/posters/' + v.name + '.jpg';
+
+      var source = document.createElement('source');
+      source.src = 'videos/' + v.name + '.mp4';
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      item.appendChild(video);
+
+      var caption = document.createElement('div');
+      caption.className = 'video-title';
+      caption.textContent = v.title;
+      item.appendChild(caption);
+
+      overlayGrid.appendChild(item);
+    });
+
+    overlay.classList.add('open');
+    overlay.scrollTop = 0;
+    pushScrollLock();
+  }
+
+  function closeCategory(){
+    if(!overlay.classList.contains('open')) return;
+    overlay.classList.remove('open');
+    overlayGrid.querySelectorAll('video').forEach(function(v){ v.pause(); });
+    popScrollLock();
+  }
+
+  overlayClose.addEventListener('click', closeCategory);
+  overlay.addEventListener('click', function(e){
+    if(e.target === overlay) closeCategory();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'Escape' || !overlay.classList.contains('open')) return;
+    var lb = document.querySelector('.lightbox');
+    if(lb && lb.classList.contains('open')) return;
+    closeCategory();
+  });
+
+  function buildCoverTile(opts){
+    var cover = document.createElement('a');
+    cover.href = '#' + opts.slug;
+    cover.className = 'cover-item reveal' + (opts.isVideo ? ' is-video' : '');
+    cover.addEventListener('click', function(e){
+      e.preventDefault();
+      opts.onOpen();
+    });
+
+    var media = document.createElement('div');
+    media.className = 'cover-media';
+
+    var img = document.createElement('img');
+    img.src = opts.imgSrc;
+    img.alt = opts.label;
+    img.loading = 'lazy';
+    media.appendChild(img);
+    cover.appendChild(media);
+
+    var label = document.createElement('span');
+    label.className = 'cover-label';
+    label.textContent = opts.label;
+    cover.appendChild(label);
+
+    coversGrid.appendChild(cover);
+    markLoaded(img);
+  }
+
+  PORTFOLIO_DATA.categories.forEach(function(cat){
+    buildCoverTile({
+      slug: cat.slug,
+      label: cat.label,
+      imgSrc: 'images/thumbs/' + cat.slug + '/' + COVERS[cat.slug] + '.jpg',
+      onOpen: function(){ openCategory(cat); }
+    });
+  });
+
+  buildCoverTile({
+    slug: 'films',
+    label: 'Films',
+    imgSrc: 'videos/posters/films-cover.jpg',
+    isVideo: true,
+    onOpen: openVideos
+  });
+
+  initReveal(coversGrid);
+})();
+</script>
+</body>
+</html>
